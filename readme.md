@@ -139,10 +139,17 @@ Semua service di daftarkan pada pom.xml root sebagai module
   <img src="dokumentasi/register.jpg" alt="Register" width="700"/>
 </p>
 
+
 - Login Gagal
 
 <p align="center">
   <img src="dokumentasi/login-gagal.jpg" alt="Login" width="700"/>
+</p>
+
+- Jika Token Tidak Sesuai
+
+<p align="center">
+  <img src="dokumentasi/Unauthorized.jpg" alt="Login" width="700"/>
 </p>
 
 - Login Success
