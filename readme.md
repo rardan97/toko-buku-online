@@ -24,7 +24,44 @@
 - lombok
 
 
+Aplikasi ini terdiri dari beberapa service/module utama:
+- web-api
+- user-service
+- book-service
+- category-service
+- common-service
+- order-service
+- reports-service
+
+
+Semua service di daftarkan pada pom.xml root sebagai module
+```xml
+<modules>
+      <module>user-service</module>
+      <module>web-api</module>
+      <module>common-service</module>
+      <module>categories-service</module>
+      <module>books-service</module>
+      <module>orders-service</module>
+      <module>reports-service</module>
+</modules>
+```
+
+### Arsitektur dan Integrasi
+
+- web-api berfungsi sebagai lapisan controller yang menangani permintaan dari pengguna (HTTP request) dan meneruskan ke service terkait.
+- Modul lain seperti user-service, book-service, category-service, order-service, dan reports-service berperan sebagai dependency yang menyediakan logika bisnis serta akses data.
+- common-service berisi komponen bersama (shared utilities, constants, DTOs, dan konfigurasi umum) yang digunakan oleh seluruh service.
+
 ---
+
+### Alur Komunikasi Antar Service
+
+- Dalam arsitektur modular monolith ini, setiap modul dapat berinteraksi langsung dengan modul lain menggunakan dependency injection (Spring Bean)
+- Setiap modul yang membutuhkan fungsionalitas dari modul lain harus mendaftarkan modul tersebut sebagai dependency di file pom.xml miliknya.
+- Client mengirim request ke web-api. web-api meneruskan permintaan ke service terkait (misalnya user-service untuk login).
+
+
 ## DONE
 
 ### Authentication 
