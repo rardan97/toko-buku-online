@@ -98,8 +98,11 @@ public class OrdersServiceImpl implements OrdersService {
             throw new UnauthorizedException("User is not authorized to pay for this order");
         }
 
-        if (payReq.getAmount().compareTo(orders.getTotal_price()) < 0) {
-            throw new InvalidPaymentException("Payment amount is less than order total");
+        BigDecimal orderTotal = orders.getTotal_price();
+        BigDecimal paymentAmount = payReq.getAmount();
+
+        if (paymentAmount.compareTo(orderTotal) != 0) {
+            throw new InvalidPaymentException("Payment amount must match the order total exactly");
         }
 
         orders.setStatus(Status.PAID);
@@ -108,7 +111,7 @@ public class OrdersServiceImpl implements OrdersService {
         PayRes payRes = new PayRes();
         payRes.setOrderId(orders.getId());
         payRes.setUserId(userRes.getId());
-        payRes.setAmount(payReq.getAmount());
+        payRes.setAmount(paymentAmount);
         payRes.setStatus(orders.getStatus().name());
         payRes.setMessage("Payment successful");
         return payRes;
