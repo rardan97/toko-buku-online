@@ -2,6 +2,7 @@ package com.blackcode.books.service;
 
 import com.blackcode.common.dto.book.BooksReq;
 import com.blackcode.common.dto.book.BooksRes;
+import com.blackcode.common.dto.reports.PriceRes;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;
@@ -20,4 +21,5 @@ public interface BooksService {
 
     Map<String, Object> deleteBooks(Long booksId);
 
+    PriceRes getBookPrice();
 }

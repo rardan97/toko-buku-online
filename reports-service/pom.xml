@@ -78,6 +78,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.blackcode</groupId>
+            <artifactId>orders-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

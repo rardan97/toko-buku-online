@@ -8,6 +8,7 @@ import com.blackcode.categories.service.CategoriesService;
 import com.blackcode.common.dto.book.BooksReq;
 import com.blackcode.common.dto.book.BooksRes;
 import com.blackcode.common.dto.categories.CategoriesRes;
+import com.blackcode.common.dto.reports.PriceRes;
 import com.blackcode.common.exception.DataNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +81,16 @@ public class BooksServiceImpl implements BooksService{
         response.put("booksId", booksId);
         response.put("info", "The book was removed from the database.");
         return response;
+    }
+
+    @Override
+    public PriceRes getBookPrice() {
+        Object[] stats = booksRepository.getBookPrice();
+        return new PriceRes(
+                stats[0] != null ? new BigDecimal(stats[0].toString()) : BigDecimal.ZERO,
+                stats[1] != null ? new BigDecimal(stats[1].toString()) : BigDecimal.ZERO,
+                stats[2] != null ? new BigDecimal(stats[2].toString()) : BigDecimal.ZERO
+        );
     }
 
 

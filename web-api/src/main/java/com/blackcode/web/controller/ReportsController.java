@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/reports")
 public class ReportsController {
@@ -30,8 +32,8 @@ public class ReportsController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/bestseller")
-    public ResponseEntity<ApiResponse<BestSellerRes>> getReportBestseller(){
-        BestSellerRes bestSellerRes = reportsService.getBestseller();
+    public ResponseEntity<ApiResponse<List<BestSellerRes>>> getReportBestseller(){
+        List<BestSellerRes> bestSellerRes = reportsService.getBestseller();
         return ResponseEntity.ok(ApiResponse.success("Report Bestseller",200, bestSellerRes));
     }
 

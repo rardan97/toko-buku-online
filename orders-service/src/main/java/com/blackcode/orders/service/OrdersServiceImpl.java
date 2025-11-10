@@ -2,8 +2,12 @@ package com.blackcode.orders.service;
 
 import com.blackcode.books.model.Books;
 import com.blackcode.books.service.BooksService;
+import com.blackcode.categories.model.Categories;
 import com.blackcode.common.dto.book.BooksRes;
+import com.blackcode.common.dto.categories.CategoriesRes;
 import com.blackcode.common.dto.orders.*;
+import com.blackcode.common.dto.reports.BestSellerRes;
+import com.blackcode.common.dto.reports.SalesRes;
 import com.blackcode.common.dto.user.UserRes;
 import com.blackcode.common.exception.DataNotFoundException;
 import com.blackcode.common.exception.InvalidPaymentException;
@@ -27,6 +31,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -74,7 +79,6 @@ public class OrdersServiceImpl implements OrdersService {
             totalPrice = totalPrice.add(itemTotal);
             orderItem.setOrders(order);
             order.getItems().add(orderItem);
-
             booksService.updateBooksStock(books.getId(), books.getStock() - itemReq.getQuantity());
         }
 
@@ -146,6 +150,32 @@ public class OrdersServiceImpl implements OrdersService {
         return mapToOrdersRes(orders);
     }
 
+    @Override
+    public SalesRes getSalesReport() {
+        BigDecimal totalRevenue = orderItemsRepository.getTotalRevenue();
+        Long totalBooksSold = orderItemsRepository.getTotalBooksSold();
+
+        SalesRes salesRes = new SalesRes();
+        salesRes.setTotal_revenue(totalRevenue != null ? totalRevenue : BigDecimal.ZERO);
+        salesRes.setTotal_books_sold(totalBooksSold != null ? totalBooksSold : 0L);
+        return salesRes;
+    }
+
+    @Override
+    public List<BestSellerRes> getBestSeller() {
+        return orderItemsRepository.findTop3BestSellingBooksNative()
+                .stream()
+                .map(row -> {
+                    BestSellerRes b = new BestSellerRes();
+                    b.setBookId(((Number) row[0]).longValue());
+                    b.setTitle((String) row[1]);
+                    b.setAuthor((String) row[2]);
+                    b.setPrice(((Number) row[3]).doubleValue() != 0 ?
+                            new java.math.BigDecimal(((Number) row[3]).doubleValue()) : null);
+                    return b;
+                })
+                .collect(Collectors.toList());
+    }
 
 
     private OrdersRes mapToOrdersRes(Orders orders) {
@@ -198,8 +228,16 @@ public class OrdersServiceImpl implements OrdersService {
         dto.setAuthor(books.getAuthor());
         dto.setPrice(books.getPrice());
         dto.setStock(books.getStock());
+        dto.setCategory(mapToCategoriesRes(books.getCategory()));
         dto.setImagePath(books.getImagePath());
         return dto;
+    }
+
+    private CategoriesRes mapToCategoriesRes(Categories categories) {
+        CategoriesRes categoriesRes = new CategoriesRes();
+        categoriesRes.setId(categories.getId());
+        categoriesRes.setName(categories.getName());
+        return categoriesRes;
     }
 
 }

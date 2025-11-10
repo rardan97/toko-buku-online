@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
+
     @Query(value = "SELECT o.* FROM tb_orders o WHERE o.users_id = :userId", nativeQuery = true)
     Page<Orders> findOrderByUserId(@Param("userId") Long userId, Pageable pageable);
 

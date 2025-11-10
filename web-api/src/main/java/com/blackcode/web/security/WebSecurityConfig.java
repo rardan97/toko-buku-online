@@ -67,6 +67,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/books/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/categories/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/orders/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/reports/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated());
         http.cors(customizer -> customizer.configurationSource(corsConfigurationSource()));
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
