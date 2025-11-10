@@ -115,12 +115,18 @@ Semua service di daftarkan pada pom.xml root sebagai module
     - Admin (can view all order)
 - Get Detail Order
 
+### Reports
+  - Sales
+  - Bestseller 
+  - Price;
+  - 
 ### Error handling
 - implementation Error handling
+- GlobalExceptionHandler
+
 
 ---
 ## In Progress
-- Reporting
 - unit testing
 - Date faker
 
